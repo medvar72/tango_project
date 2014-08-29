@@ -36,6 +36,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #Uncomment the next lines tp enable admin
+    #'django.contrib.admin',
+    #Uncomment the next line to enable admin documentation
+    #django.contrib.admindocs,
+    'rango',
+
 )
 
 MIDDLEWARE_CLASSES = (
