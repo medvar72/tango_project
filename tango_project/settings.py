@@ -24,6 +24,12 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
+TEMPLATE_PATH = [os.path.join(BASE_DIR,'templates')] 
+
+TEMPLATE_DIRS = (
+		TEMPLATE_PATH,
+		)
+
 ALLOWED_HOSTS = []
 
 
@@ -37,9 +43,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #Uncomment the next lines tp enable admin
-    #'django.contrib.admin',
+    'django.contrib.admin',
     #Uncomment the next line to enable admin documentation
-    #django.contrib.admindocs,
+    'django.contrib.admindocs',
     'rango',
 
 )
