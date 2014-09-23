@@ -1,0 +1,29 @@
+<!DOCTYPE hmtl>
+{% load staticfiles %}
+<html>
+	<head>
+		<title> Rango Application </title>
+	</head>
+	<body>
+		<h1> Rango says ... </h1>
+		Hello World! <strong>{{ boldmessage }} </strong> <br/>
+        Base Dir >> <strong>{{ basedir }} </strong> <br/>
+        Project Dirs >> <strong>{{ projectdir }} </strong> <br/>
+        Template Dirs >> <strong>{{ templatedir }} </strong> <br/>
+        Media Dir >> <strong>{{ mediadir }} </strong> <br/>
+        {% if categories %}
+        <ul>
+            {% for category in categories %}
+            <li> {{ category.name }} </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <strong> There are no categories in this moment.</strong>
+        {% endif %}
+
+		<a href="/rango/about">About Page </a><br />
+        <img src="{% static "rango/images/rango3.jpg" %}" alt="Rango image" height = "300" width = "300"/>
+	</body>
+</html>
+
+
