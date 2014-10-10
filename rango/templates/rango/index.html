@@ -6,23 +6,35 @@
 	</head>
 	<body>
 		<h1> Rango says ... </h1>
-		Hello World! <strong>{{ boldmessage }} </strong> <br/>
+		<strong>Hello World! </strong> <br/>
         Base Dir >> <strong>{{ basedir }} </strong> <br/>
         Project Dirs >> <strong>{{ projectdir }} </strong> <br/>
         Template Dirs >> <strong>{{ templatedir }} </strong> <br/>
         Media Dir >> <strong>{{ mediadir }} </strong> <br/>
         {% if categories %}
+        <h2> Top 5 Categories </h2>
         <ul>
             {% for category in categories %}
-            <li> {{ category.name }} </li>
+            <li> <a href= "/rango/category/{{ category.url }}" > {{category.name}} </a>  </li>
             {% endfor %}
         </ul>
         {% else %}
-        <strong> There are no categories in this moment.</strong>
+        <strong> There are no categories in this moment.</strong> <br/>
+        {% endif %}
+        {% if pages %}
+        <h2> Top 5 Pages </h2>
+        <ul>
+            {% for page in pages %}
+            <li> <a href= "{{ page.url }}" > {{page.title}} </a>  </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <strong> There are no pages in this moment.</strong> <br/>
         {% endif %}
 
 		<a href="/rango/about">About Page </a><br />
-        <img src="{% static "rango/images/rango3.jpg" %}" alt="Rango image" height = "300" width = "300"/>
+        <img src="{% static "rango/images/rango3.jpg" %}" alt="Rango image" height = "300" width = "300"/><br />
+        <a href="/rango/add_category/"> Add a new Category</a>
 	</body>
 </html>
 
