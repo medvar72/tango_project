@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rango</title>
+    </head>
+    <body>
+        <h1>Register with Rango</h1>
+        {% if registered %}
+        Rango says: <strong> Thank you for Registering </strong> <br/>
+        <a href="/rango/"> Return to the Homepage </a> <br />
+        {% else %}
+        Rango says: <strong> register here!</strong> <br />
+        <form id="user_form" method="POST" action="/rango/register/" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!--Display each form. The as_p method wraps echa element in a parragraph
+            (<p>) element. This ensures element appears on a new line,
+            making everytihing look neater. -->
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+            <!-- Provide a buttom to click to submit the form.-->
+            <input type="submit" name="submit" value="Register" />
+         </form>
+         {% endif %}
+    </body>
+</html>
+

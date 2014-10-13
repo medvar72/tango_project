@@ -43,16 +43,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admin',
     'django.contrib.admindocs',
+    'registration',
     'rango',
-
 )
 
 #Enable site framework
@@ -124,3 +124,11 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') # Absolute path to the media directory
 
+# URL to redirect user to that are not logged in
+LOGIN_URL = "/rango/login/"
+
+# This is the number of days users will have to activate their accounts after registering.
+# If a user does not activate within that period, the account will remain permanently inactive
+# and may be deleted by maintenance scripts provided in django-registration.
+
+ACCOUNT_ACTIVATION_DAYS = 7

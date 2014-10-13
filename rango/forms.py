@@ -1,5 +1,6 @@
+from rango.models import Page,Category,UserProfile
+from django.contrib.auth.models import User
 from django import forms
-from rango.models import Page,Category
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=128, help_text='Please enter the Category Name')
@@ -27,7 +28,7 @@ class PageForm(forms.ModelForm):
             cleaned_data['url'] = url
         return cleaned_data
 
-
+# Inline Class to specify fields to be showed
     class Meta:
         # Provide an association between the ModelForm and a model
         model = Page
@@ -37,5 +38,17 @@ class PageForm(forms.ModelForm):
          # Some fields may allow NULL values, so we may not want to include them...
          # Here, we are hiding the foreign key.
         fields =  ('title','url','views')
+
+class UserForm(forms.ModelForm):
+    """Form to define Users"""
+    password = forms.CharField(widget=forms.PasswordInput())
+    class Meta:
+        model = User
+        fields = ('username','email','password')
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('website','picture')
 
 
