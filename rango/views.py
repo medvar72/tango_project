@@ -1,13 +1,13 @@
-from django.shortcuts import render,get_object_or_404,get_list_or_404
+from django.shortcuts import render,get_object_or_404,get_list_or_404,render_to_response
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template import RequestContext
-from django.shortcuts import render_to_response
 from django.conf import settings
 # Import the Category model
 from rango.models import Category,Page
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate,logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import login
 
 
 
@@ -58,14 +58,17 @@ def index(request):
     # Return a rendered response to send to the client.
     # we make use of the shortcut function to make our lives more easier.
     # Note the first parameter is the template we wish to use.
-    return render_to_response('rango/index.html',context_dict,context)
+    if (request.user.is_authenticated()):
+        return render_to_response('rango/index.html',context_dict,context)
+    # Just in case wh want to use the view Index to login
+    # return login(request,template_name='rango/index.html')
+    return HttpResponseRedirect("/accounts/login/")
 
 
 def about(request):
     #return HttpResponse("Rango says : Here is the about page <a href='/rango/'>Index Page<a/>")
     context = RequestContext(request)
-    context_dict = {'var1': "Value1"}
-    return render_to_response('rango/about.html',context_dict,context)
+    return render_to_response('rango/about.html',{},context)
 
 # Show the several categories with it pages
 def category(request,category_name_url):
@@ -248,60 +251,60 @@ def register(request):
         context)
 
 
-def user_login(request):
-# Obtanin the context for the user's request.
-    context = RequestContext(request)
+# def user_login(request):
+# # Obtanin the context for the user's request.
+#     context = RequestContext(request)
 
-    # if the request is a HTTP POT, tyr to pull out the relevant information
-    if request.method == "POST":
-        # Gather the username and password provided by the user.
-        # This information is obtained from the login form
-        username = request.POST['username']
-        password = request.POST['password']
+#     # if the request is a HTTP POT, tyr to pull out the relevant information
+#     if request.method == "POST":
+#         # Gather the username and password provided by the user.
+#         # This information is obtained from the login form
+#         username = request.POST['username']
+#         password = request.POST['password']
 
-        # Use Django's machinery to attemp to see if the username/password
-        # combination is valid - a User object is returned if it is.
-        user = authenticate(username=username, password=password)
+#         # Use Django's machinery to attemp to see if the username/password
+#         # combination is valid - a User object is returned if it is.
+#         user = authenticate(username=username, password=password)
 
-        # If we have a user obkect, the details are correct.
-        # If None (Python's way to represent the absence of a value), no user
-        # with macthing credentials was found.
-        if user:
-            # Is the account active? It coudl have been diasbled.
-            if user.is_active:
-                # if the account is valid and active, we can log the user in.
-                # We will send the user back to the homepage.
-                login(request,user)
-                return HttpResponseRedirect('/rango/')
-            else:
-                # An inactive account was used - no logging in!
-                return HttpResponse("Your Rango account is disabled")
-        else:
-            # base login details were provided. So we can not log the user in
-            print "Invalid Login details : {0}, {1}".format(username,password)
-            return HttpResponse("Invalid login details supplied. Username or Password Invalid")
-    # The request is not a HTTP POST, so display the login form
-    # This scenario would most likely be a HTTP GET.
-    else:
-        # Not context variables o pass to the template system, hence the
-        # blank dictionary object...
-        return render_to_response('rango/login.html',{},context)
+#         # If we have a user obkect, the details are correct.
+#         # If None (Python's way to represent the absence of a value), no user
+#         # with macthing credentials was found.
+#         if user:
+#             # Is the account active? It coudl have been diasbled.
+#             if user.is_active:
+#                 # if the account is valid and active, we can log the user in.
+#                 # We will send the user back to the homepage.
+#                 login(request,user)
+#                 return HttpResponseRedirect('/rango/')
+#             else:
+#                 # An inactive account was used - no logging in!
+#                 return HttpResponse("Your Rango account is disabled")
+#         else:
+#             # base login details were provided. So we can not log the user in
+#             print "Invalid Login details : {0}, {1}".format(username,password)
+#             return HttpResponse("Invalid login details supplied. Username or Password Invalid")
+#     # The request is not a HTTP POST, so display the login form
+#     # This scenario would most likely be a HTTP GET.
+#     else:
+#         # Not context variables o pass to the template system, hence the
+#         # blank dictionary object...
+#         return render_to_response('rango/login.html',{},context)
 
 @login_required
 def content_restricted(request):
     return HttpResponse("Since you are logged in, you can see this text  <br /> <a href='/rango/'>Index Page<a/> <br />")
 
+# @login_required
+# def user_logout(request):
+#     # Since we know the user is logged in, we can now just log them out.
+#     logout(request)
+
+#     # take the user back to the homepage
+#     return HttpResponseRedirect('/rango/')
+
 @login_required
-def user_logout(request):
-    # Since we know the user is logged in, we can now just log them out.
-    logout(request)
-
-    # take the user back to the homepage
-    return HttpResponseRedirect('/rango/')
-
-
-
-
+def profile(request):
+    return render(request,template_name='rango/profile.html')
 
 
 
