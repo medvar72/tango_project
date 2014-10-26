@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+<!-- <title> Rango Application </title> -->
+{# {% block title %} Rango Application {% endblock %} #}
+{% block nav_user %}
+{% if user.is_authenticated %}
+    <ul class="nav navbar-nav navbar-right">
+        <li id="nav-username"><a href="{% url 'rango.views.profile' %}">
+            <span class="glyphicon glyphicon-user"></span> {{user.get_user_name }} &nbsp; </a>
+        </li>
+        <li>
+            <a href="{% url 'django.contrib.auth.views.logout' %}"> Sign out </a> <br />
+        </li>
+    </ul>
+{% else %}
+    <form class="navbar-form navbar-right"
+            method="post"
+            action="{% url 'django.contrib.auth.views.login' %}">
+        {% csrf_token %}
+        {% bootstrap_field form.username show_label=False %}
+        {% bootstrap_field form.password show_label=False %}
+        <input type="hidden" name="next" value="{% url 'rango.views.index' %}" />
+        <button type="submit" class="btn btn-success">Sign in</button>
+    </form>
+{% endif %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="jumbotron">
+        <div class="container">
+            <h1> Rango Application </h1>
+            <p class="lead"> django-registration demo using bootstrap s</p>
+            {% if not user.is_authenticated %}
+                <p> Rango says ... <strong>Hello World ! </strong>  <br/>
+                <a class="btn btn-lg btn-primary" href="{% url 'registration_register' %}"> Register Here</a> &nbsp;
+                <a class="btn btn-lg btn-success" href="{% url 'django.contrib.auth.views.login' %}"> Sign in Here</a>
+                </p>
+            {% else %}
+                 Rango says ...
+                <strong>Hello {{ user.username }} ! </strong> <br/>
+            {% endif %}
+        </div> <!--/Container -->
+    </div> <!-- /jumbotron -->
+{% if user.is_authenticated %}
+    <ul>
+        <li>Base Dir >> <strong>{{ basedir }} </strong> <br/></li>
+        <li>Project Dirs >> <strong>{{ projectdir }} </strong> <br/></li>
+        <li>Template Dirs >> <strong>{{ templatedir }} </strong> <br/></li>
+        <li>Media Dir >> <strong>{{ mediadir }} </strong> <br/></li>
+        {% if categories %}
+            <h2> Top 5 Categories </h2>
+            <ul>
+                {% for category in categories %}
+                    <li> <a href= "/rango/category/{{ category.url }}" > {{category.name}} </a>  </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong> There are no categories in this moment.</strong> <br/>
+        {% endif %}
+        {% if pages %}
+            <h2> Top 5 Pages </h2>
+            <ul>
+                {% for page in pages %}
+                <li> <a href= "{{ page.url }}" > {{page.title}} </a>  </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong> There are no pages in this moment.</strong> <br/>
+        {% endif %}
+            <li>
+                <a href="/rango/add_category/"> Add a new Category</a> <br/>
+            </li>
+            <li>
+                <a href="/rango/restricted/"> Restricted Content</a> <br />
+            </li>
+        </ul>
+{% endif %}
+<img src="{% static "rango/images/rango3.jpg" %}" class="img-responsive" alt="Rango image" height = "300" width = "300"/><br />
+<a href="{% url 'about' %}">About Page </a><br />
+</div> <!-- /container -->
+{% endblock content %}
+
+
