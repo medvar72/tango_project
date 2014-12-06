@@ -2,6 +2,8 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
+from django.conf.urls.static import static
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -34,8 +36,13 @@ urlpatterns = patterns('',
     url(r'^profile/$', 'rango.views.profile', name='profile'),
 )
 
+if not settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL,
+        document_root=settings.STATIC_ROOT)
+
 if settings.DEBUG:
     urlpatterns += patterns('django.views.static',
         (r'media/(?P<path>.*)',
         'serve',
         {'document_root':settings.MEDIA_ROOT}),)
+

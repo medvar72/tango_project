@@ -14,19 +14,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 #Project Path
 PROJECT_PATH = BASE_DIR
-TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
+TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     TEMPLATE_PATH,
-    '../registration/templates/',
 )
 
-#template dir
-# TEMPLATE_DIRS = [os.path.join(BASE_DIR,'templates')]
-# TEMPLATE_DIRS = ('../rango/templates/',
-#                 '../registration/templates/',)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -136,34 +131,42 @@ LOCALE_PATHS = (
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 #static dir
-STATIC_PATH = os.path.join(PROJECT_PATH,'static')
+STATIC_PATH = os.path.join(BASE_DIR,'static')
 
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     STATIC_PATH,
-     '../rango/static/',
-     '../registration/static/',
+     # '../rango/static/',
+     # '../registration/static/',
 )
 
+
+#media dir
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Absolute path to the media directory
+
+# browser-length sessions
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+
+# Setting of django-registration-redux app
 #
 # Output emails to console for demo purposes.
-#
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 
 # This is the number of days users will have to activate their accounts after registering.
 # If a user does not activate within that period, the account will remain permanently inactive
 # and may be deleted by maintenance scripts provided in django-registration.
 ACCOUNT_ACTIVATION_DAYS = 7
 
-
-#media dir
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') # Absolute path to the media directory
-
 # URL to redirect user to that are not logged in
 LOGIN_URL = "/accounts/login/"
 
+# The page you want users to arrive at after they successful log in
+LOGIN_REDIRECT_URL = '/rango/'
 
+# if True the users can register
+REGISTRATION_OPEN = True
 
+REGISTRATION_AUTO_LOGIN = True  # If True, the user will be automatically logged in.

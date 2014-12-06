@@ -1,0 +1,14 @@
+{% extends "base2.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+{% block title %} Rango Application - Restricted View  {% endblock %}
+{% block content %}
+<div class="container">
+            <h2> Rango says ...  </H2>
+            <strong> Since you are logged in, you can see this text    </strong> <br/>
+    <a href= "{% url 'rango.views.index' %}"> Index Page <a/>
+   <br />
+</div> <!-- /container -->
+{% endblock content %}
+
+

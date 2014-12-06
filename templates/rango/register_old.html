@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Rango</title>
-    </head>
-    <body>
-        <h1>Register with Rango</h1>
-        {% if registered %}
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+{% block title %} Rango Application - Register with Rango View   {% endblock %}
+{% block content %}
+<div class="container">
+    {% if registered %}
         Rango says: <strong> Thank you for Registering </strong> <br/>
         <a href="/rango/"> Return to the Homepage </a> <br />
         {% else %}
@@ -20,7 +19,6 @@
             <!-- Provide a buttom to click to submit the form.-->
             <input type="submit" name="submit" value="Register" />
          </form>
-         {% endif %}
-    </body>
-</html>
-
+    {% endif %}
+</div> <!--/Container -->
+{% endblock content %}

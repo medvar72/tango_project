@@ -18,6 +18,7 @@ class PageAdmin(admin.ModelAdmin):
       search_fields = ['title']
 
 class CategoryAdmin(admin.ModelAdmin):
+      prepopulated_fields = {'slug':('name',)}
       fieldsets = [
         ('Category ', {'fields':['name','views','likes']}),
     ]

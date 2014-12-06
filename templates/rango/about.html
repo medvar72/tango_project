@@ -1,32 +1,18 @@
-<!DOCTYPE hmtl>
-{% extends "base.html" %}
+{% extends "base2.html" %}
 {% load bootstrap3 %}
 {% load staticfiles %}
-{% block title %} Rango Application - About View  {% endblock %}
+{% block title %} About View  {% endblock %}
 {% block content %}
-<div class="container">
-    <div class="jumbotron">
-        <div class="container">
-            <h1> Rango says ...  </h1>
-            <strong> Here is the about page   </strong> <br/>
-        </div> <!--/Container -->
-        <img src="{% static "rango/images/mii2.jpg" %}" alt="Mii image" height = "300" width = "300"/>
-    </div> <!-- /jumbotron -->
-    <a href='/rango/'>Index Page<a/> <br />
-</div> <!-- /container -->
+<div class="page-header">
+    <h1> Rango says ...  </h1>
+</div> <!-- /page-header -->
+<div>
+    <strong> Here is the about page   </strong> <br/>
+    <p> <strong> You have visited this site on  : {{ visits }} occasion(s) </strong></p>
+    <img src="{% static "images/mii2.jpg" %}" alt="Mii image" height = "300" width = "300"/>
+</div>
+<a href= "{% url 'index' %}"> Index Page <a/>
+ <br />
 {% endblock content %}
 
-
-{# <html>
-	<head>
-		<title> Rango Application </title>
-	</head>
-	<body>
-		<h1> Rango says ... </h1>
-		<strong> Here is the about page   </strong> <br/>
-		<a href='/rango/'>Index Page<a/> <br />
-        <img src="{% static "rango/images/mii2.jpg" %}" alt="Mii image" height = "300" width = "300"/>
-	</body>
-</html>
- #}
 

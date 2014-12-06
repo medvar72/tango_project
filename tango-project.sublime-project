@@ -1,2 +1,10 @@
+//tango_project.sublime-project
 {
+    "settings":{
+        "python_interpreter_path": "/home/.virtualenvs/tango_project7/bin/python",
+        "python_package_paths": [
+        "/home/.virtualenvs/tango_project7/lib/python2.7/site-packages/",
+        "/Volumes/Mac_HDD/Desarrollo/Python/tango_project/"
+        ]
+    }
 }

@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Rango</title>
-    </head>
-
-    <body>
-        <h1>Add a Category </h1>
-        <form id = "category_form" method="post" action="/rango/add_category/">
+{% extends "base2.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+{% block title %} Rango Application - Add a Category View   {% endblock %}
+{% block content %}
+<div class="container">
+    <form id = "category_form" method="post" action="/rango/add_category/">
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
@@ -17,7 +15,10 @@
                 {{ field.help_text }}
                 {{ field }}
             {% endfor %}
+            <br/>
+            <br/>
             <input type= "submit" name="submmit" value="Create a Category" />
         </form>
-    </body>
-</html>
+
+</div> <!-- /container -->
+{% endblock content %}
