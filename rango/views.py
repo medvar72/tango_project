@@ -173,40 +173,39 @@ def add_category(request):
 # if there are errors, redisplay the form with error messages.
 @login_required
 def add_page(request,category_name_url):
-    # # Get a Context from Request
-    # context = RequestContext(request)
-    # Get Category name from category_name_url
-    category_name = encode_decode(category_name_url,False)
+    # Wrap the code in a try block - check if the category actually exists!
+    try:
+        # cat = Category.objects.get(name=category_name)
+        cat = Category.objects.get(slug=category_name_url)
+    except Category.DoesNotExist :
+        # If we get here, the category does not exist.
+        # Go back and render the add category form as a way of saying the category does not exist.
+        # return render_to_response('rango/add_category.html', {}, context)
+        cat = None
     # A HTTP POST? There are some data to save
     if request.method == "POST":
         form = PageForm(request.POST)
 
         # Is a valid form?
         if form.is_valid():
-            # This time we cannot commit straight away.
-            # Not all fields are automatically populated!
-            page = form.save(commit=False)
+            if cat:
 
-            # Retrieve the associated Category object so we can add it.
-            # Wrap the code in a try block - check if the category actually exists!
-            try:
-                cat = Category.objects.get(name=category_name)
+                # This time we cannot commit straight away.
+                # Not all fields are automatically populated!
+                page = form.save(commit=False)
+
                 page.category = cat
-            except Category.DoesNotExist :
-                # If we get here, the category does not exist.
-                # Go back and render the add category form as a way of saying the category does not exist.
-                # return render_to_response('rango/add_category.html', {}, context)
-                return render(request,'rango/add_category.html', {})
 
-            # Also, create a default value for the number of views.
-            page.views = 0
+                # Also, create a default value for the number of views.
+                page.views = 0
 
-            # With this, we can then save our new model instance.
-            page.save()
+                # With this, we can then save our new model instance.
+                page.save()
 
-            # Now that the page is saved, display the category instead.
-            return category(request, category_name_url)
-
+                # Now that the page is saved, display the category instead.
+                return category(request, category_name_url)
+            else:
+                form = PageForm()
         else:
             # The supplied form contains errors - just print to the terminal
             print form.errors
@@ -215,9 +214,8 @@ def add_page(request,category_name_url):
         form = PageForm()
 
     # Bad form (or form details ), no form supplied...
-    return render(request,'rango/add_page.html',
-        {'category_name_url': category_name_url,
-        'category_name': category_name,'form': form})
+    context_dict = {'form': form,'category':cat,'category_name_url':category_name_url,'category_name':cat.name}
+    return render(request,'rango/add_page.html',context_dict)
 
 
 

@@ -1,10 +1,10 @@
 {% extends "base2.html" %}
 {% load bootstrap3 %}
 {% load staticfiles %}
-{% block title %} Rango Application - Add a Category View   {% endblock %}
+{% block title %} Add a Category View   {% endblock %}
 {% block content %}
-<div class="container">
-    <form id = "category_form" method="post" action="/rango/add_category/">
+    <form role="form" id="category_form" method="post" action="/rango/add_category/">
+        <h2 class="form-signin-heading"> Add a New Category </h2>
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
@@ -12,13 +12,10 @@
 
             {% for field in form.visible_fields %}
               <h3>  {{ field.errors }} </h3>
-                {{ field.help_text }}
-                {{ field }}
+                {{ field.help_text }} <br/>
+                {{ field }} <br/>
             {% endfor %}
             <br/>
-            <br/>
-            <input type= "submit" name="submmit" value="Create a Category" />
+            <button class="btn btn-primary" type="submit" name="submit"> Add Category </button>
         </form>
-
-</div> <!-- /container -->
 {% endblock content %}
