@@ -1,12 +1,12 @@
 from django.shortcuts import render,get_object_or_404,get_list_or_404
 from django.http import HttpResponse,HttpResponseRedirect
 from django.conf import settings
-# Import the Category model
 from rango.models import Category,Page
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login
 from datetime import datetime
+from rango.bing_search import run_query
 
 
 
@@ -332,6 +332,15 @@ def content_restricted(request):
 def profile(request):
     return render(request,template_name='rango/profile.html')
 
+def search(request):
+    result_list = []
+
+    if request.method == "POST":
+        query = request.POST['query'].strip()
+        if query:
+            # run the bing_search
+            result_list = run_query(query)
+    return render(request,'rango/search.html',{'result_list':result_list})
 
 
 

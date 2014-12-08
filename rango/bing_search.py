@@ -1,11 +1,12 @@
 import json
 import urllib,urllib2
 from keys import BING_API_KEY
+import sys
 
 def run_query(search_terms):
     # Specify the base
     root_url = 'https://api.datamarket.azure.com/Bing/Search/'
-    source = 'web'
+    source = 'Web'
 
     # Specify how many results we wish to be returned per page
     # Offset specifies where in the results lists to start from
@@ -62,6 +63,25 @@ def run_query(search_terms):
 
     # return the results
     return results
+
+
+def main():
+    arg = str(sys.argv[1])
+    print BING_API_KEY
+    print "arg :%s" % arg
+    results = run_query(arg)
+    for result in results:
+        print "title : %s" % result['title']
+        print "link : %s" % result['link']
+        print "Description : %s" % result['summary']
+
+
+
+
+
+if __name__ == "__main__":
+    main()
+
 
 
 
