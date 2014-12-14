@@ -1,0 +1,21 @@
+{% extends "base2.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+{% block title %} Add a Profile View   {% endblock %}
+{% block content %}
+    <form role="form" id="UserProfileForm" method="post" action="/rango/add_profile/">
+        <h2 class="form-signin-heading"> Add a New Profile </h2>
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+              <h3>  {{ field.errors }} </h3>
+                {{ field.help_text }} <br/>
+                {{ field }} <br/>
+            {% endfor %}
+            <br/>
+            <button class="btn btn-primary" type="submit" name="submit"> Add Profile </button>
+        </form>
+{% endblock content %}

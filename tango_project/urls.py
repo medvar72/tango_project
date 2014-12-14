@@ -3,8 +3,14 @@ from django.conf.urls import patterns, include, url
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.conf.urls.static import static
+from registration.backends.default.views import RegistrationView
 
 admin.autodiscover()
+
+# Create a new class that redirects the user to the index page, if successful at logging
+class MyRegistrationView(RegistrationView):
+    def get_success_url(selfself,request, user):
+        return '/rango/'
 
 urlpatterns = patterns('',
     # Examples:
@@ -13,6 +19,8 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('registration.backends.default.urls')),
+    # url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
+    # (r'^accounts/', include('registration.backends.default.urls')),
     url(r'^password/change/$',
         auth_views.password_change,
         name='password_change'),
