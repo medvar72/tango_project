@@ -4,6 +4,8 @@ from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.conf.urls.static import static
 from registration.backends.default.views import RegistrationView
+from rango import views
+from rango.forms import UserProfileForm
 
 admin.autodiscover()
 
@@ -18,9 +20,11 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^accounts/', include('registration.backends.default.urls')),
+    # Uncomment this to activate own registration
+     url(r'^accounts/register/$', RegistrationView.as_view(form_class = UserProfileForm), name='registration_register'),
     # url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
     # (r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^password/change/$',
         auth_views.password_change,
         name='password_change'),

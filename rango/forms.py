@@ -1,6 +1,12 @@
+from __future__ import unicode_literals
 from rango.models import Page,Category,UserProfile
 from django.contrib.auth.models import User
 from django import forms
+from registration.forms import RegistrationForm
+from registration.models import RegistrationProfile
+from django.utils.translation import ugettext_lazy as _
+
+
 
 class CategoryForm(forms.ModelForm):
     name    = forms.CharField(max_length=128, help_text='Please enter the Category Name')
@@ -46,14 +52,62 @@ class PageForm(forms.ModelForm):
 
 class UserForm(forms.ModelForm):
     """Form to define Users"""
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.RegexField(regex=r'^[\w.@+-]+$',
+                                max_length=30,
+                                label=_("Username"),
+                                error_messages={'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")})
+    email = forms.EmailField(label=_("E-mail"))
+    password1 = forms.CharField(widget=forms.PasswordInput,
+                                label=_("Password"))
+    password2 = forms.CharField(widget=forms.PasswordInput,
+                                label=_("Password (again)"))
+    # password = forms.CharField(widget=forms.PasswordInput())
+
+    def clean_username(self):
+        """
+        Validate that the username is alphanumeric and is not already
+        in use.
+
+        """
+        existing = User.objects.filter(username__iexact=self.cleaned_data['username'])
+        if existing.exists():
+            raise forms.ValidationError(_("A user with that username already exists."))
+        else:
+            return self.cleaned_data['username']
+
+    def clean(self):
+        """
+        Verifiy that the values entered into the two password fields
+        match. Note that an error here will end up in
+        ``non_field_errors()`` because it doesn't apply to a single
+        field.
+
+        """
+        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
+            if self.cleaned_data['password1'] != self.cleaned_data['password2']:
+                raise forms.ValidationError(_("The two password fields didn't match."))
+        return self.cleaned_data
+
     class Meta:
         model = User
-        fields = ('username','email','password')
+        fields = ('username','email','password1','password2')
 
-class UserProfileForm(forms.ModelForm):
+# class UserProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = UserProfile
+#         fields = ('website','picture')
+
+class UserProfileForm(RegistrationForm):
+    website = forms.URLField(max_length=200,help_text='Please entre the url of the page')
+    picture = forms.ImageField()
     class Meta:
         model = UserProfile
-        fields = ('website','picture')
+        fields = '__all__'
 
-
+    # def save(self, profile_callback=None):
+    #     new_user = RegistrationProfile.objects.create_inactive_user(username=self.cleaned_data['username'],
+    #     password=self.cleaned_data['password1'],
+    #     email = self.cleaned_data['email'])
+    #     new_profile = UserProfile(user=new_user, website=self.cleaned_data['website'], picture=self.cleaned_data['picture'])
+    #     new_profile.save()
+    #     return new_user

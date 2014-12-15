@@ -170,3 +170,6 @@ LOGIN_REDIRECT_URL = '/rango/'
 REGISTRATION_OPEN = True
 
 REGISTRATION_AUTO_LOGIN = True  # If True, the user will be automatically logged in.
+
+
+# AUTH_PROFILE_MODULE = Rango.UserProfile

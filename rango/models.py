@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from registration.signals import user_registered
+
 
 # Create your models here.
 class Category(models.Model):
@@ -35,8 +37,17 @@ class UserProfile(models.Model):
 
     # The additional attributes we wish to include
     website = models.URLField(blank=True)
-    picture = models.ImageField(upload_to = 'profile_images',blank=True)
+    picture = models.ImageField(upload_to = 'profile_images',null=True,blank=True)
 
     # Override the __unicode__() method to return something meaningful!
     def __unicode__(self):
         return self.user.username
+
+def user_registered_callback(sender,user,request,**kwargs):
+    profile = UserProfile(user=user)
+    profile.website = request.POST["website"]
+    if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+    profile.save()
+
+user_registered.connect(user_registered_callback)

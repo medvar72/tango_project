@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate,login
 from datetime import datetime
 from rango.bing_search import run_query
 from django.core.urlresolvers import reverse
+from registration.backends.default.views import ActivationView
+from registration.backends.default.views import RegistrationView
 
 
 
@@ -232,7 +234,7 @@ def add_page(request,category_name_url):
     return render(request,'rango/add_page.html',context_dict)
 
 
-
+# Method to implement the register processs
 def register(request):
     # # get the context request
     # context = RequestContext(request)
@@ -260,16 +262,16 @@ def register(request):
             # Now sort out the UserProfile instance.
             # Since we need to set the user attribute ourselves, we set commit=false
             # This delays saving the model until we are ready to avoid integrity problems
-            profile = profile_form.save(commit=False)
-            profile.user = user
+            user_profile = profile_form.save(commit=False)
+            user_profile.user = user
 
             # Did the user provide a profile picture?
             #  If so, we need to get it from the input form and put it in the UserProfile model
             if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
+                user_profile.picture = request.FILES['picture']
 
             # Now we save the UserProfile model instance
-            profile.save()
+            user_profile.save()
 
             # Update our variable to tell the template registration was sucesfull
             registered = True
@@ -286,8 +288,12 @@ def register(request):
         profile_form = UserProfileForm()
 
     # Render the template depending on Context
-    return render(request,'rango/register.html',
-        {'user_form':user_form,'profile_form':profile_form, 'registered':registered})
+    if not registered:
+        return render(request,'rango/register.html',
+            {'user_form':user_form,'profile_form':profile_form, 'registered':registered})
+    else:
+        return HttpResponseRedirect('/accounts/register/complete/')
+
 
 
 
