@@ -296,46 +296,6 @@ def register(request):
 
 
 
-
-# def user_login(request):
-# # Obtanin the context for the user's request.
-#     context = RequestContext(request)
-
-#     # if the request is a HTTP POT, tyr to pull out the relevant information
-#     if request.method == "POST":
-#         # Gather the username and password provided by the user.
-#         # This information is obtained from the login form
-#         username = request.POST['username']
-#         password = request.POST['password']
-
-#         # Use Django's machinery to attemp to see if the username/password
-#         # combination is valid - a User object is returned if it is.
-#         user = authenticate(username=username, password=password)
-
-#         # If we have a user obkect, the details are correct.
-#         # If None (Python's way to represent the absence of a value), no user
-#         # with macthing credentials was found.
-#         if user:
-#             # Is the account active? It coudl have been diasbled.
-#             if user.is_active:
-#                 # if the account is valid and active, we can log the user in.
-#                 # We will send the user back to the homepage.
-#                 login(request,user)
-#                 return HttpResponseRedirect('/rango/')
-#             else:
-#                 # An inactive account was used - no logging in!
-#                 return HttpResponse("Your Rango account is disabled")
-#         else:
-#             # base login details were provided. So we can not log the user in
-#             print "Invalid Login details : {0}, {1}".format(username,password)
-#             return HttpResponse("Invalid login details supplied. Username or Password Invalid")
-#     # The request is not a HTTP POST, so display the login form
-#     # This scenario would most likely be a HTTP GET.
-#     else:
-#         # Not context variables o pass to the template system, hence the
-#         # blank dictionary object...
-#         return render_to_response('rango/login.html',{},context)
-
 @login_required
 def content_restricted(request):
     return render(request,'rango/restricted.html',{})
@@ -422,6 +382,21 @@ def track_url(request):
             except:
                 pass
     return HttpResponseRedirect(url)
+
+@login_required
+def like_category(request):
+    cat_id = None
+    if request.method == 'GET':
+        if 'category_id' in request.GET:
+            cat_id = request.GET['category_id']
+    likes = 0
+    if cat_id:
+        cat = Category.objects.get(id=int(cat_id))
+        if cat:
+            likes = cat.likes+1
+            cat.likes = likes
+            cat.save()
+    return HttpResponse(likes)
 
 
 

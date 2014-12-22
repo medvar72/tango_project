@@ -49,7 +49,7 @@
                 <li><a href="{% url 'auth_login' %}">Login</a></li>
             {% endif %}
              <li><a href="{% url 'about' %}">About</a></li>
-             <li><a href="{% url 'search' %}">Search in Bing</a></li>
+             {# <li><a href="{% url 'search' %}">Search in Bing</a></li> #}
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
@@ -89,6 +89,8 @@
     <script src="{% static "js/docs.min.js" %}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static "js/ie10-viewport-bug-workaround.js" %}"></script>
+    <script src="{% static "js/rango-jquery.js" %}"></script>
+    <script src="{% static "js/rango-ajax.js" %}"></script>
   {% bootstrap_javascript jquery=True %}
 </body>
 </html>

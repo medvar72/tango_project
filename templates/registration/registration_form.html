@@ -13,7 +13,6 @@
         <a href="{% url 'django.contrib.auth.views.login' %}">SIGN IN HERE.</a></p>
     </div>
   </div>
-
   <form enctype="multipart/form-data" action="{% url 'registration_register' %}"
         method="post" role="form" class="form-horizontal" >
     {% csrf_token %}

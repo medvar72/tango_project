@@ -32,6 +32,15 @@
     {% else %}
         The specified category {{ category_name }} does not exist!
     {% endif %}
+     <p>
+        <strong id="like_count">{{ category.likes }} </strong> People like this category
+        {% if user.is_authenticated %}
+            <button id="likes" data-catid="{{ category.id }}" class="btn btn-primary" type="button">
+                <span class="glyphicon glyphicon-thumbs-up"></span>
+                Like
+            </button>
+        {% endif %}
+    </p>
     </div>
     <br />
 <!-- Form Search in Bing Begin-->
