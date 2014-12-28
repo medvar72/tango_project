@@ -2,6 +2,7 @@ import json
 import urllib,urllib2
 from keys import BING_API_KEY
 import sys
+from rango.models import Category
 
 def run_query(search_terms):
     # Specify the base

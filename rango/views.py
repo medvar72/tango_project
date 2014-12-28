@@ -398,7 +398,54 @@ def like_category(request):
             cat.save()
     return HttpResponse(likes)
 
+# helper function to get a Category List
+def get_category_list(max_results=0,starts_with=''):
+    cat_list = []
 
+    if len(starts_with.strip()) > 0:
+        cat_list = Category.objects.filter(name__istartswith=starts_with)
+
+    if max_results > 0:
+        if len(cat_list) > max_results:
+            cat_list = cat_list[:max_results]
+    return cat_list
+
+def suggest_category(request):
+    cat_list = []
+    context_dict = {}
+    starts_with = ''
+    max_results = 8 #Top Results
+    if request.method == 'GET':
+        if 'suggestion' in request.GET:
+            starts_with = request.GET['suggestion']
+    cat_list = get_category_list(max_results,starts_with)
+    context_dict['cats'] = cat_list
+    return render(request,'rango/cats.html',context_dict)
+
+
+@login_required
+def auto_add_page(request):
+    cat_id = None
+    pag_title = None
+    pag_url = None
+    context_dict = {}
+    if request.method == 'GET':
+        if 'category_id' in request.GET:
+            cat_id = request.GET['category_id']
+            print 'cat_id: ' + cat_id
+        if 'page_title' in request.GET:
+            pag_title = request.GET['page_title']
+            print 'page_title: ' + pag_title
+        if 'page_url' in request.GET:
+            pag_url = request.GET['page_url']
+            print 'page_url: '+  pag_url
+
+    if cat_id:
+        cat = Category.objects.get(id=int(cat_id))
+        p = Page.objects.get_or_create(category=cat,title=pag_title,url=pag_url)
+        pages = Page.objects.filter(category=cat).order_by('-views')
+        context_dict['pages'] = pages
+    return render(request,'rango/page_list.html',context_dict)
 
 
 
