@@ -16,7 +16,13 @@ class Category(models.Model):
 
     def save(self, *args,**kwargs):
         self.slug = slugify(self.name)
-        super(Category, self).save(*args, **kwargs)
+
+        if self.views >= 0:
+            super(Category, self).save(*args, **kwargs)
+        else:
+            self.views = self.views * (-1)
+            # raise ValueError('Negative Value to Views')
+
 
 
     def __unicode__(self):
