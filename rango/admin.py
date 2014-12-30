@@ -11,9 +11,9 @@ class PageInline(admin.TabularInline):
 class PageAdmin(admin.ModelAdmin):
       fieldsets = [
         (None, {'fields':['title']}),
-        ('Details',{'fields':['category','url','views'],'classes':['collapse']}),
+        ('Details',{'fields':['category','url','views','first_visit','last_visit'],'classes':['collapse']}),
     ]
-      list_display = ('title','category','url','views')
+      list_display = ('title','category','url','views','first_visit','last_visit')
       list_filter = ['title','category']
       search_fields = ['title']
 

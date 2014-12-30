@@ -10,6 +10,7 @@ from rango.bing_search import run_query
 from django.core.urlresolvers import reverse
 from registration.backends.default.views import ActivationView
 from registration.backends.default.views import RegistrationView
+from datetime import datetime
 
 
 
@@ -215,6 +216,9 @@ def add_page(request,category_name_url):
                 # Also, create a default value for the number of views.
                 page.views = 0
 
+                page.first_visit = datetime.now()
+                page.last_visit = datetime.now()
+
                 # With this, we can then save our new model instance.
                 page.save()
 
@@ -376,6 +380,10 @@ def track_url(request):
             try:
                 page = Page.objects.get(id=page_id)
                 page.views+=1
+                if (page.views == 1):
+                    page.first_visit = datetime.now()
+                else:
+                    page.last_visit = datetime.now()
                 page.save()
                 url = page.url
                 print url

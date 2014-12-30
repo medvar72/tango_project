@@ -3,9 +3,11 @@ from rango.models import Page,Category,UserProfile
 from django.contrib.auth.models import User
 from django import forms
 from registration.forms import RegistrationForm
-from registration.models import RegistrationProfile
 from django.utils.translation import ugettext_lazy as _
-
+from django.db import models
+from datetime import datetime
+from django.contrib.admin import widgets
+from django.utils import timezone
 
 
 class CategoryForm(forms.ModelForm):
@@ -24,6 +26,8 @@ class PageForm(forms.ModelForm):
     title = forms.CharField(max_length=128,help_text='Please enter the title of the page')
     url = forms.URLField(max_length=200,help_text='Please entre the url of the page')
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    first_visit = forms.DateTimeField(widget=widgets.AdminSplitDateTime(), initial=timezone.now())
+    last_visit = forms.DateTimeField(widget=widgets.AdminSplitDateTime(), initial=timezone.now())
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -31,7 +35,7 @@ class PageForm(forms.ModelForm):
         # Code to verify and fix url field
         url = cleaned_data.get('url')
         #  if url is not empty and doesn't start with 'http://', prepend 'http://'
-        if url and not url.startswith('http://'):
+        if url and not (url.startswith('http://') or url.startswith('https://')) :
             url = 'http://'+ url
             cleaned_data['url'] = url
         return cleaned_data
@@ -48,7 +52,7 @@ class PageForm(forms.ModelForm):
          # we can either exclude the category field from the form,
         # exclude = ('category',)
         #or specify the fields to include (i.e. not include the category field)
-        fields =  ('title','url','views')
+        fields =  ('title','url','views','first_visit','last_visit')
 
 class UserForm(forms.ModelForm):
     """Form to define Users"""

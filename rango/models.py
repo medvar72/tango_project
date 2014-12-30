@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from registration.signals import user_registered
+import datetime
+from django.utils import timezone
 
 
 # Create your models here.
@@ -33,6 +35,9 @@ class Page(models.Model):
     title = models.CharField(max_length=128)
     url = models.URLField()
     views = models.IntegerField(default=0)
+    first_visit = models.DateTimeField("First_Visit",default=timezone.now())
+    last_visit  = models.DateTimeField("Last_Visit",default=timezone.now())
+
 
     def __unicode__(self):
         return self.title
