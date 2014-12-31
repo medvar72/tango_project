@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
-
+import socket
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -29,12 +29,19 @@ TEMPLATE_DIRS = (
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '$&nri+e$3!#s=f846lwhz&0v1&g+nj)b$p()mjg&i(&f#n+%#u'
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+print 'HostaNane: ' + socket.gethostname()
+if (socket.gethostname()=='HectorsMac.local'):
+    DEBUG = True
+    ALLOWED_HOSTS = []
+else:
+    DEBUG = False
+    ALLOWED_HOSTS = ['medvar72.pythonanywhere.com']
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition

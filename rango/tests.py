@@ -39,7 +39,7 @@ class PageMethodTests(TestCase):
 
      """
      futuretime = timezone.now() + datetime.timedelta(days=2)
-     c,_ = Category.objects.get_or_create(name='CategoryTest')
+     c = Category.objects.get_or_create(name='CategoryTest')[0]
      p = c.page_set.create(title = 'Wikipedia', url= 'htttp://wikipedia.org',views=0,first_visit=futuretime,last_visit=timezone.now())
      p.save()
      self.assertEqual(p.first_visit >= timezone.now(),False)
