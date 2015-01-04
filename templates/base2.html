@@ -3,6 +3,7 @@
 {% load bootstrap3 %}
 {% load rango_extras %}
 {% bootstrap_css %}
+{% bootstrap_javascript %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -14,7 +15,7 @@
 
     <title> Rango - {% block title %} How to Tango with Django! {% endblock %} </title>
 
-    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <!--<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">-->
     <link href="{% static "css/dashboard.css" %}" rel="stylesheet">
 
     <!-- [if Lt IE 9]>
@@ -98,8 +99,8 @@
   <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{% static "js/jquery.min.js" %}"></script>
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/jquery.min.js" %}"></script> 
+    <!-- <script src="{% static "js/bootstrap.min.js" %}"></script> -->
     <script src="{% static "js/docs.min.js" %}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static "js/ie10-viewport-bug-workaround.js" %}"></script>
